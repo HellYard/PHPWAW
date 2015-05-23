@@ -23,7 +23,7 @@ class PHPWAW {
         'db_name' => 'database',
         'db_username' => 'username',
         'db_password' => 'password',
-        'copyright' => 'Copyright &copy; 2015 <a href="http://creatorfromhell.com">Daniel "creatorfromhell" Vidmar.</a>.',
+        'copyright' => 'Copyright &copy; 2015 <a href="http://creatorfromhell.com">Daniel "creatorfromhell" Vidmar</a>.',
     );
 
     public function __construct($steps, $configurations = array()) {
@@ -76,6 +76,7 @@ class PHPWAW {
             $_SESSION['executions'][$step]['before'] = true;
         }
         $rules = array(
+            'message' => $_SESSION['message'],
             'step' => $this->build_step($step),
             'copyright' => self::$powered_by."<br>".$this->configurations['copyright']
         );

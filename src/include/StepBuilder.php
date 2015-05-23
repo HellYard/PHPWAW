@@ -69,6 +69,20 @@ class StepBuilder {
                 $value = (isset($part['value'])) ? $part['value'] : "";
                 $placeholder = (isset($part['placeholder'])) ? $part['placeholder'] : "";
                 $newline = isset($part['newline']) ? $part['newline'] : "";
+                $classes = "";
+                if(is_array($_SESSION['invalid_inputs']) && in_array($part['name'], $_SESSION['invalid_inputs'])) {
+                    $classes = "invalid";
+                }
+                $attributes = "";
+                if(isset($part['attributes'])) {
+                    foreach($part['attributes'] as $key => $value) {
+                        $new_value = $value;
+                        if($key === "class") {
+                            $new_value .= " ".$classes;
+                        }
+                        $attributes .= $key."=\"".$new_value."\"";
+                    }
+                }
 
                 if(isset($part['label'])) {
                     if($part['type'] != "checks") {
@@ -87,7 +101,7 @@ class StepBuilder {
                     case "textarea":
                         $rows = (isset($part['rows'])) ? $part['rows'] : 8;
                         $columns = (isset($part['cols'])) ? $part['cols'] : 50;
-                        $part_string .= "<textarea rows=\"".$rows."\" cols=\"".$columns."\">".$value."</textarea>";
+                        $part_string .= "<textarea rows=\"".$rows."\" cols=\"".$columns."\" ".$attributes.">".$value."</textarea>";
                         break;
                     case "description":
                         $part_string .= "<p class=\"description\">".$value."</p>";
@@ -96,7 +110,7 @@ class StepBuilder {
                         $part_string .= $this->build_check($part);
                         break;
                     default:
-                        $part_string .= "<input type=\"".$part['type']."\" name=\"".$name."\" value=\"".$value."\" placeholder=\"".$placeholder."\" />";
+                        $part_string .= "<input type=\"".$part['type']."\" name=\"".$name."\" value=\"".$value."\" placeholder=\"".$placeholder."\" ".$attributes." />";
                         break;
                 }
                 if($newline === "both" || $newline === "input") {
@@ -123,6 +137,9 @@ class StepBuilder {
                     case "file":
                         $value .= $this->check_file($check);
                         break;
+                    case "database":
+                        $value .= "";
+                        break;
                 }
                 $special = ($i % 2 == 0) ? " class=\"special\"" : "";
                 $return .= "<tr".$special.">".$value."</tr>";
@@ -139,7 +156,7 @@ class StepBuilder {
         switch($check['name']) {
             case "php-version":
                 $correct = version_compare(phpversion(), $check['check'][0], $check['check'][1]);
-                $value = phpversion();
+                $value = $check['check'][1]." ".$check['check'][0];
                 break;
             default:
                 $correct = ini_get($check['name']) == $check['check'];

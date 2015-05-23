@@ -26,6 +26,17 @@ $steps = array(
                 'save' => 'temp.zip'
             )
         ),
+        'validation' => array(
+            'inputs' => array(
+                array(
+                    'name' => 'license',
+                    'rules' => array(
+                        'required' => true,
+                        'value' => '392-385-017'
+                    )
+                )
+            )
+        ),
         'step_parts' => array(
             array(
                 'type' => 'checks',
@@ -55,6 +66,12 @@ $steps = array(
                     'es' => 'Spanish'
                 )
             ),
+            array(
+                'label' => 'License(392-385-017): ',
+                'name' => 'license',
+                'type' => 'text',
+                'newline' => 'input',
+            ),
         ),
     ),
     array(
@@ -67,6 +84,34 @@ $steps = array(
             'right' => array(
                 'text' => 'Finish',
                 'show' => true
+            )
+        ),
+        'validation' => array(
+            'inputs' => array(
+                array(
+                    'name' => 'db_host',
+                    'rules' => array(
+                        'required' => true,
+                    )
+                ),
+                array(
+                    'name' => 'db_name',
+                    'rules' => array(
+                        'required' => true,
+                    )
+                ),
+                array(
+                    'name' => 'db_username',
+                    'rules' => array(
+                        'required' => true,
+                    )
+                ),
+                array(
+                    'name' => 'db_password',
+                    'rules' => array(
+                        'required' => true,
+                    )
+                )
             )
         ),
         'step_parts' => array(

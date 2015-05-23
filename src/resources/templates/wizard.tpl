@@ -11,6 +11,7 @@
     <![endif]-->
 </head>
 <body>
+{ message }
 <form action="" method="POST">
     { step }
 </form>

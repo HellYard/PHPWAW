@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width" initial-scale="1">
+		<title>PHP Web Application Wizard</title>
+		<link href="style.css" rel="stylesheet" type="text/css" />
+		<!--[if le IE 9]>
+			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+			<script src="http://css3-mediaqueries-js.googlecode.com/files/css3-mediaqueries.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+        <form>
+            <h2>PHP Web Application Wizard</h2>
+            <div class="holder">
+                <fieldset class="parts">
+                    <label for="text">Example: </label>
+                    <input name="text" type="text" placeholder="Example Placeholder"><br>
+                    <input type="checkbox" name="check" value="test"><b>Example checkbox input.</b>
+                    <h3>Example Checks</h3>
+                    <table>
+                        <tbody>
+                            <tr class="special">
+                                <td><img src="yes.png" alt="yes" /></td>
+                                <td>php-version</td>
+                                <td>5.3.1</td>
+                            </tr>
+                            <tr>
+                                <td><img src="yes.png" alt="yes" /></td>
+                                <td>MySQL</td>
+                                <td>loaded</td>
+                            </tr>
+                            <tr class="special">
+                                <td><img src="no.png" alt="no" /></td>
+                                <td>file.txt</td>
+                                <td>exists</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+            <fieldset class="buttons">
+                <input type="submit" name="back" value="Back" disabled>
+                <input type="submit" name="next" class="right" value="Next">
+            </fieldset>
+        </form>
+        <p class="copyright">Powered by <a href="#">PHP Web Application Wizard</a>.<br>Copyright &copy; 2015 Daniel "creatorfromhell" Vidmar.</p>
+    </body>
+</html>
