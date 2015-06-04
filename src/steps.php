@@ -82,7 +82,7 @@ $steps = array(
                 'show' => true
             ),
             'right' => array(
-                'text' => 'Finish',
+                'text' => 'Next',
                 'show' => true
             )
         ),
@@ -114,6 +114,20 @@ $steps = array(
                 )
             )
         ),
+        'executions' => array(
+            array(
+                'type' => 'sql_query',
+                'order' => 'after',
+                'queries' => array(
+                    array(
+                        'query' => 'CREATE TABLE IF NOT EXISTS `PHPWAW` (
+                                        `id` int(11) NOT NULL AUTO_INCREMENT,
+                                        `yeoldeusername` varchar(36) NOT NULL,
+                                    );'
+                    )
+                )
+            )
+        ),
         'step_parts' => array(
             array(
                 'label' => 'MySQL Host: ',
@@ -138,6 +152,25 @@ $steps = array(
                 'name' => 'db_password',
                 'type' => 'text',
                 'newline' => 'input',
+            ),
+        ),
+    ),
+    array(
+        'header' => 'PHPWAW Final Step',
+        'buttons' => array(
+            'left' => array(
+                'text' => 'Back',
+                'show' => true
+            ),
+            'right' => array(
+                'text' => 'Finish',
+                'show' => true
+            )
+        ),
+        'step_parts' => array(
+            array(
+                'type' => 'description',
+                'value' => 'Installation complete!',
             ),
         ),
     ),

@@ -29,7 +29,7 @@ class PHPWAW {
     public function __construct($steps, $configurations = array()) {
         $this->steps = $steps;
 
-        if(isset($_SESSION['values']['db_host'])) {
+        if(isset($_SESSION['values']['db_host']) && isset($_SESSION['values']['db_name']) && isset($_SESSION['values']['db_username']) && isset($_SESSION['values']['db_password'])) {
             $this->configurations['sql_enabled'] = true;
             $this->configurations['db_host'] = $_SESSION['values']['db_host'];
             $this->configurations['db_name'] = $_SESSION['values']['db_name'];
@@ -50,7 +50,12 @@ class PHPWAW {
     }
 
     public function connect($host, $db, $username, $password) {
-        $this->db = new Connection($host, $db, $username, $password);
+        try {
+            $this->db = new Connection($host, $db, $username, $password);
+            return true;
+        } catch(PDOException $e) {
+            return false;
+        }
     }
 
     private function build_step($step) {

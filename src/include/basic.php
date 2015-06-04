@@ -38,6 +38,14 @@ if(isset($_POST['back']) || isset($_POST['next'])) {
                 }
             }
         }
+        if(isset($_POST['db_host']) && isset($_POST['db_name']) && isset($_POST['db_username']) && isset($_POST['db_password'])) {
+            try {
+                new Connection($_POST['db_host'], $_POST['db_name'], $_POST['db_username'], $_POST['db_password']);
+            } catch(PDOException $e) {
+                $execute = false;
+                $_SESSION['message'] = "<p class=\"message\">Invalid MySQL credentials!</p>";
+            }
+        }
         $next_step = $step_number;
 
         if($execute) {

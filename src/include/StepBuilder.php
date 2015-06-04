@@ -163,7 +163,7 @@ class StepBuilder {
                 $value = ini_get($check['name']);
                 break;
         }
-        $file = base_directory."resources/img/".(($correct) ? "yes.png" : "no.png");
+        $file = "resources/img/".(($correct) ? "yes.png" : "no.png");
         $return = "<td><img src=\"".$file."\" alt=\"".(($correct) ? "yes" : "no")."\" /></td><td>".$check['name']."</td><td>".$value."</td>";
         return $return;
     }
@@ -175,8 +175,8 @@ class StepBuilder {
                 $correct = extension_loaded($check['check']);
                 break;
         }
-        $file = base_directory."resources/img/".(($correct) ? "yes.png" : "no.png");
-        $return = "<td><img src=\"".$file."\" alt=\"".(($correct) ? "yes" : "no")."\" /></td><td>".$check['check']."</td><td>extension loaded: ".$correct."</td>";
+        $file = "resources/img/".(($correct) ? "yes.png" : "no.png");
+        $return = "<td><img src=\"".$file."\" alt=\"".(($correct) ? "yes" : "no")."\" /></td><td>".$check['check']."</td><td>extension loaded: ".(($correct) ? "Yes" : "No")."</td>";
         return $return;
     }
 
@@ -193,7 +193,7 @@ class StepBuilder {
                 $correct = file_exists($check['file']);
                 break;
         }
-        $file = base_directory."resources/img/".(($correct) ? "yes.png" : "no.png");
+        $file = "resources/img/".(($correct) ? "yes.png" : "no.png");
         $return = "<tr><img src=\"".$file."\" alt=\"".(($correct) ? "yes" : "no")."\" /></td><td>".$check['file']."</td><td>".$check['check'].": ".$correct."</td>";
         return $return;
     }

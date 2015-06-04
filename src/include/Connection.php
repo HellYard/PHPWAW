@@ -14,10 +14,7 @@ class Connection {
     public $pdo;
 
     public function __construct($host, $database, $username, $password) {
-        try {
-            $this->pdo = new PDO('mysql:dbname='.$database.';host='.$host, $username, $password);
-        } catch(PDOException $e) {
-        }
+        $this->pdo = new PDO('mysql:dbname='.$database.';host='.$host, $username, $password);
     }
 
     public function query_file($file) {
