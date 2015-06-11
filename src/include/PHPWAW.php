@@ -18,7 +18,6 @@ class PHPWAW {
     private static $powered_by = "Powered by <a href=\"https://github.com/creatorfromhell/PHPWAW\">PHP Web Application Wizard</a>.";
 
     public $configurations = array(
-        'sql_enabled' => false,
         'db_host' => 'localhost',
         'db_name' => 'database',
         'db_username' => 'username',
@@ -30,7 +29,6 @@ class PHPWAW {
         $this->steps = $steps;
 
         if(isset($_SESSION['values']['db_host']) && isset($_SESSION['values']['db_name']) && isset($_SESSION['values']['db_username']) && isset($_SESSION['values']['db_password'])) {
-            $this->configurations['sql_enabled'] = true;
             $this->configurations['db_host'] = $_SESSION['values']['db_host'];
             $this->configurations['db_name'] = $_SESSION['values']['db_name'];
             $this->configurations['db_username'] = $_SESSION['values']['db_username'];
@@ -39,14 +37,12 @@ class PHPWAW {
 
         $this->configurations = array_replace($this->configurations, $configurations);
 
-        if($this->configurations['sql_enabled']) {
-            $this->connect(
-                $this->configurations['db_host'],
-                $this->configurations['db_name'],
-                $this->configurations['db_username'],
-                $this->configurations['db_password']
-            );
-        }
+        $this->connect(
+            $this->configurations['db_host'],
+            $this->configurations['db_name'],
+            $this->configurations['db_username'],
+            $this->configurations['db_password']
+        );
     }
 
     public function connect($host, $db, $username, $password) {
@@ -95,7 +91,6 @@ class PHPWAW {
                 $execution_order = (isset($execution['order'])) ? $execution['order'] : "before";
                 if($execution_order === $order) {
                     $type = $execution['type'];
-
                     switch($type) {
                         case "download":
                             Executions::download($execution['location'], $execution['save']);
@@ -105,21 +100,45 @@ class PHPWAW {
                             call_user_func_array(array("Executions", $execution['name']), $parameters);
                             break;
                         case "sql_query":
-                            if($this->configurations['sql_enabled']) {
-                                foreach ($execution['queries'] as &$query) {
-                                    $parameters = (isset($query['parameters']) && is_array($query['parameters'])) ? $query['parameters'] : array();
-                                    $this->db->query($query['query'], $parameters);
+                            foreach ($execution['queries'] as &$query) {
+                                $parameters = (isset($query['parameters']) && is_array($query['parameters'])) ? $query['parameters'] : array();
+                                if(!($this->db instanceof Connection)) {
+                                    $this->connect(
+                                        $this->configurations['db_host'],
+                                        $this->configurations['db_name'],
+                                        $this->configurations['db_username'],
+                                        $this->configurations['db_password']
+                                    );
                                 }
+                                $this->db->query($this->replace_variables($query['query']), $parameters);
                             }
                             break;
                         case "sql_file":
-                            if($this->configurations['sql_enabled']) {
-                                $this->db->query_file($execution['name']);
+                            if(!($this->db instanceof Connection)) {
+                                $this->connect(
+                                    $this->configurations['db_host'],
+                                    $this->configurations['db_name'],
+                                    $this->configurations['db_username'],
+                                    $this->configurations['db_password']
+                                );
                             }
+                            $this->db->query_file($execution['name']);
                             break;
                     }
                 }
             }
         }
+    }
+
+    private function replace_variables($query) {
+        $matched = array();
+        preg_match_all("/\\%([^%]+)\\%/", $query, $matched, PREG_SET_ORDER);
+        if(!empty($matched)) {
+            foreach ($matched as &$rule) {
+                $replacement = (isset($_SESSION['values'][$rule[1]])) ? $_SESSION['values'][$rule[1]] : $rule[1];
+                $query = str_replace($rule[0], $replacement, $query);
+            }
+        }
+        return $query;
     }
 }

@@ -65,12 +65,12 @@ class StepBuilder {
         $part_string = "";
         if(isset($this->step['step_parts']) && is_array($this->step['step_parts'])) {
             foreach ($this->step['step_parts'] as &$part) {
-                $name = $part['name'];
+                $name = (isset($part['name'])) ? $part['name'] : "";
                 $value = (isset($part['value'])) ? $part['value'] : "";
                 $placeholder = (isset($part['placeholder'])) ? $part['placeholder'] : "";
                 $newline = isset($part['newline']) ? $part['newline'] : "";
                 $classes = "";
-                if(is_array($_SESSION['invalid_inputs']) && in_array($part['name'], $_SESSION['invalid_inputs'])) {
+                if(isset($_SESSION['invalid_inputs']) && is_array($_SESSION['invalid_inputs']) && in_array($name, $_SESSION['invalid_inputs'])) {
                     $classes = "invalid";
                 }
                 $attributes = "";
@@ -81,6 +81,9 @@ class StepBuilder {
                             $new_value .= " ".$classes;
                         }
                         $attributes .= $key."=\"".$new_value."\"";
+                    }
+                    if(!isset($part['attributes']['class'])) {
+                        $attributes .= "class=\"".$classes."\"";
                     }
                 }
 

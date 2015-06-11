@@ -24,7 +24,7 @@ $steps = array(
                 'order' => 'before',
                 'location' => 'http://creatorfromhell.com/projects/trackr/latest.zip',
                 'save' => 'temp.zip'
-            )
+            ),
         ),
         'validation' => array(
             'inputs' => array(
@@ -111,21 +111,13 @@ $steps = array(
                     'rules' => array(
                         'required' => true,
                     )
-                )
-            )
-        ),
-        'executions' => array(
-            array(
-                'type' => 'sql_query',
-                'order' => 'after',
-                'queries' => array(
-                    array(
-                        'query' => 'CREATE TABLE IF NOT EXISTS `PHPWAW` (
-                                        `id` int(11) NOT NULL AUTO_INCREMENT,
-                                        `yeoldeusername` varchar(36) NOT NULL,
-                                    );'
+                ),
+                array(
+                    'name' => 'table_name',
+                    'rules' => array(
+                        'required' => true,
                     )
-                )
+                ),
             )
         ),
         'step_parts' => array(
@@ -153,6 +145,12 @@ $steps = array(
                 'type' => 'text',
                 'newline' => 'input',
             ),
+            array(
+                'label' => 'Table Name: ',
+                'name' => 'table_name',
+                'type' => 'text',
+                'newline' => 'input',
+            ),
         ),
     ),
     array(
@@ -172,6 +170,20 @@ $steps = array(
                 'type' => 'description',
                 'value' => 'Installation complete!',
             ),
+        ),
+        'executions' => array(
+            array(
+                'type' => 'sql_query',
+                'order' => 'before',
+                'queries' => array(
+                    array(
+                        'query' => 'CREATE TABLE IF NOT EXISTS `%table_name%` (
+                                        `id` INT(11) NOT NULL,
+                                        `yeoldeusername` VARCHAR(36) NOT NULL
+                                    );'
+                    )
+                )
+            )
         ),
     ),
 );
